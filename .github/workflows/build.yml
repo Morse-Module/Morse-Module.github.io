@@ -1,0 +1,16 @@
+name: Flutter Build Web
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+    - uses: subosito/flutter-action@v1 # Flutter env
+      with:
+        channel: "beta" # Flutter web support only exists on beta
+    - run: flutter config --enable-web # Tell it we want to use web
+    - run: flutter pub get # Get dependencies
+    - run: flutter build web # Build for web

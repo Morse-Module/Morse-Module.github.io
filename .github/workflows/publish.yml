@@ -1,0 +1,33 @@
+name: Publish to GitHub Pages
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+      - uses: subosito/flutter-action@v1
+        with:
+          channel: beta # Flutter web support only works on beta
+      - run: flutter config --enable-web
+      - run: flutter pub get # Get dependencies
+      - run: flutter build web # Build for web
+      - name: commit # Set up fake user, use shell script to copy over web files, and commit changes to the gh-pages branch
+        run: |
+          git config --global user.email "action@morse-module.com"
+          git config --global user.name "GitHub Pages Publisher"
+          git checkout pubspec.lock
+          git checkout master
+          sh update.sh
+          git add .
+          git commit -m "Publish to GitHub Pages"
+      - name: push # Push committed changes to gh-pages for deployment
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: "master"
