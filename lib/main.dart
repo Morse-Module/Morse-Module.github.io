@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:morse_module/themes.dart';
 
 void main() {
   runApp(MyApp());
@@ -9,10 +10,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Morse-Module',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
+      theme: Themes().dark,
       home: MyHomePage(title: 'Morse Module'),
     );
   }
